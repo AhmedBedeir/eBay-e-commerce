@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+{% block title%}
+  Auctions: {{title}}
+{% endblock %}
+{% block body %}
+<div class="container" style="margin-top: 40px;">
+  {% for item in allListOfThisCategory %}
+      <div class="card" >
+          <img class="card-img-top" src="{{ item.photo.url }}" alt="photo listing">
+          <div class="card-body">
+          <h5 class="card-title">{{ item.title }}</h5>
+          <strong class="badge bg-light pt-2 ms-3 mt-3 text-dark">${{ item.startingBid }}</strong>
+          <p class="card-text">{{ item.description }}</p>
+          <p class="card-text"><small class="text-muted">Created On: {{ item.createdOn }}</small></p>
+          <h5><span class="badge bg-success ms-2">{{ item.category }}</span></h5>
+          <a href="{% url 'item' item.id %}" class="btn btn-primary">See More >></a>
+          </div>
+      </div>
+      {% empty %}
+      <div class="alert alert-primary" role="alert">
+          No Listing Of This Category Now..^_^
+        </div>
+  {% endfor%}
+</div>
+    
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+ {% block body %}
+<h1>Categories</h1>
+<div class="container">
+  <a href="{% url 'listCategory' 'fashion' %}"
+    ><div class="profile-card-2">
+      <img
+        src="https://images.pexels.com/photos/842811/pexels-photo-842811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        class="img img-responsive"
+      />
+      <div class="profile-name">Fashion</div>
+    </div></a
+  >
+  <a href="{% url 'listCategory' 'toys' %}"
+    ><div class="profile-card-2">
+      <img
+        src="https://images.pexels.com/photos/3661194/pexels-photo-3661194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        class="img img-responsive"
+      />
+      <div class="profile-name">Toys</div>
+    </div></a
+  >
+  <a href="{% url 'listCategory' 'electronics' %}"
+    ><div class="profile-card-2">
+      <img
+        src="https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        class="img img-responsive"
+      />
+      <div class="profile-name">Electronics</div>
+    </div></a
+  >
+  <a href="{% url 'listCategory' 'watches' %}"
+    ><div class="profile-card-2">
+      <img
+      src="https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      class="img img-responsive"
+      />
+      <div class="profile-name">Watches</div>
+    </div></a
+  >
+  <a href="{% url 'listCategory' 'other' %}"
+    ><div class="profile-card-2">
+      <img
+      src="https://images.pexels.com/photos/7858799/pexels-photo-7858799.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      class="img img-responsive"
+      />
+      <div class="profile-name">Other..</div>
+    </div></a
+  >
+</div>
+{% endblock %}

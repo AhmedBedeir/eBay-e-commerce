@@ -1,0 +1,28 @@
+{% extends 'auctions/layout.html' %}
+
+{% block title%}
+  Watch List
+{% endblock %}
+
+{% block body %}
+    <h2>Watch List</h2>
+    <div class="container" style="margin-top: 40px;">
+        {% for item in watchList %}
+            <div class="card" >
+                <img class="card-img-top" src="{{ item.photo.url }}" alt="photo listing">
+                <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <strong class="badge bg-light pt-2 ms-3 mt-3 text-dark">${{ item.startingBid }}</strong>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="card-text"><small class="text-muted">Created On: {{ item.createdOn }}</small></p>
+                <h5><span class="badge bg-warning ms-2">{{ item.category }}</span></h5>
+                <a href="{% url 'item' item.id %}" class="btn btn-primary">See More >></a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-primary" role="alert">
+                No List in your Watch List..!
+              </div>
+        {% endfor%}
+    </div>
+{% endblock %}

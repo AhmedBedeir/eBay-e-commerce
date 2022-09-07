@@ -1,0 +1,136 @@
+{% extends "auctions/layout.html" %} 
+
+
+{% block title%} 
+  Auctions: {{item.title}}
+{% endblock %}
+
+
+
+{% block body %}
+
+{% if request.session.added %}
+{% endif %}
+
+{% if messages %}
+<div class="alert alert-info" role="alert" style="width: 50%;">
+  <ul class="messages">
+      {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+</div>
+{% endif %}
+<div class="content-item">
+  <div class="img">
+    <img src="{{ item.photo.url }}" alt="item-photo"/>
+  </div>
+  <div class="info">
+    <!-- it Show if user login or not -->
+    {% if item.active %}
+    <h3>{{ item.title }} <span class="badge badge-pill badge-success">Active</span></h3>
+    {% else %}  
+    <h3>{{ item.title }} <span class="badge badge-pill badge-danger">Closed</span></h3>
+    {% endif %}
+    
+    {% if maxPrice.price__max == None%}
+      <h4><span class="badge badge-info">${{ item.startingBid }}</span></h4>
+    {% else %}
+      <h4><span class="badge badge-info">${{ maxPrice.price__max }}</span></h4>
+    {% endif %}
+      
+    <ul>
+      <li>
+        <p>{{ item.description }}</p>
+      </li>
+      <li>
+        Category: 
+        <a href="{% url 'listCategory' item.category %}" style="color: #333;">
+          <span class="badge bg-warning ms-2">{{ item.category }}</span>
+        </a>
+      </li>
+      <li>
+        <span class="text-muted"
+          >Created By: <strong>{{ item.owner }}</strong></span
+        >
+      </li>
+      <li>
+        <span class="text-muted">Created On: {{ item.createdOn }}</span>
+      </li>
+    </ul>
+    <!-- it depends..! -->
+    <div class="btns">
+      {% if user.is_authenticated %}
+          {% if item.active %}
+            <p>{{ numberBids }} bid(s) so far. Your bid is the current bid.</p>
+            <form action="{% url 'placeBid' item.id %}" method="post">
+              {% csrf_token %}
+              {{ getPrice.getPrice }}
+              <button class="btn btn-primary" style="display: block; margin-bottom: 10px;">Place Bid</button>
+            </form>
+          {% else %}
+            <div class="alert alert-info" role="alert">
+              This Listing is Closed..!
+            </div>
+            {% if item.winner == user %}
+              <div class="alert alert-success" role="alert">
+                Congratulations, You Win this auctions..!
+              </div>
+            {% endif %}
+          {% endif %}
+          <!-- to show add to watch list or not -->
+          {% if user in item.watchList.all %}
+            <form action="{% url 'removeFromWatchList' item.id %}" method="post">
+              {% csrf_token %}
+              <button class="btn  btn-outline-danger">- Remove from WatchList</button>
+            </form>
+          {% else %}
+            <form action="{% url 'addToWatchList' item.id %}" method="post">
+              {% csrf_token %}
+              <button class="btn  btn-outline-primary">+ Add to WatchList</button>
+            </form>
+          {% endif %}
+
+          <!-- show close button or not -->
+          {% if item.owner == user and item.active %}
+            <form action="{% url 'unActiveList' item.id %}" method="post">
+              {% csrf_token %}
+              <button class="btn  btn-outline-warning">Make UnActive</button>
+            </form>
+          {% endif %}
+            
+      {% else %}
+        <div class="alert alert-warning" role="alert">
+          You Should <a href="{% url 'login' %}">Login</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="style-comment">
+  <h1>Comments:</h1>
+</div>
+<div class="comments">
+  {% if user.is_authenticated %}
+    <!-- create one comment -->
+    <div class="comment">
+      {% for it in item.comments.all %}
+        <h5>{{ it.creator.username }}</h5>
+        <small class="text-muted">Created On: {{ it.createdOn }}</small>
+        <p>{{ it.content }}</p>
+      {% endfor %}
+    </div>
+    <div class="add-comment">
+      <form action="{% url 'comment' item.id %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="comment" placeholder="Comment" class="form-control">
+        <button class="btn btn-primary" style="margin-top: 10px;">Add Comment</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      You Should <a href="{% url 'login' %}">Login</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
